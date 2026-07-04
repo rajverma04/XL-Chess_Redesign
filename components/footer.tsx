@@ -18,19 +18,19 @@ const socials = [
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-white/10 bg-[oklch(0.15_0.04_268)]">
+    <footer className="relative border-t border-white/10 bg-bg-footer">
       <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="grid gap-10 lg:grid-cols-[1.4fr_repeat(4,1fr)]"
+          className="grid gap-10 grid-cols-2 md:grid-cols-4 lg:grid-cols-[1.4fr_repeat(4,1fr)]"
         >
           {/* Brand */}
-          <div className="max-w-xs">
+          <div className="max-w-xs col-span-full lg:col-span-1">
             <div className="flex items-center gap-3">
-              <div className="flex size-11 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-brand to-[oklch(0.5_0.2_280)] shadow-lg shadow-brand/30">
+              <div className="flex size-11 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-brand to-brand-accent shadow-lg shadow-brand/30">
                 <span className="text-2xl leading-none text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.4)]">
                   {"\u265E"}
                 </span>
@@ -54,7 +54,7 @@ export function Footer() {
                   aria-label={label}
                   className="flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-white/60 transition hover:bg-brand hover:text-brand-foreground"
                 >
-                  <Icon className="size-4" />
+                  <Icon aria-hidden="true" className="size-4" />
                 </a>
               ))}
             </div>

@@ -1,58 +1,155 @@
-import { Button as ButtonPrimitive } from '@base-ui/react/button'
-import { cva, type VariantProps } from 'class-variance-authority'
+"use client"
 
-import { cn } from '@/lib/utils'
+import React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
+import { motion, useReducedMotion } from "motion/react"
+import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "inline-flex items-center justify-center font-semibold rounded-xl transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer",
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground [a]:hover:bg-primary/80',
-        outline:
-          'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
-        secondary:
-          'bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
-        ghost:
-          'hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50',
-        destructive:
-          'bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40',
-        link: 'text-primary underline-offset-4 hover:underline',
+        primary: "bg-brand text-brand-foreground shadow-lg shadow-brand/30 hover:brightness-110",
+        secondary: "border border-white/10 hover:border-white/25 bg-white/5 text-white backdrop-blur hover:bg-white/10",
+        ghost: "text-white/80 hover:bg-white/5 hover:text-white",
+        danger: "bg-wrong-red text-white hover:brightness-110 shadow-lg shadow-wrong-red/20",
       },
       size: {
-        default:
-          'h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2',
-        xs: "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: 'h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2',
-        icon: 'size-8',
-        'icon-xs':
-          "size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
-        'icon-sm':
-          'size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg',
-        'icon-lg': 'size-9',
+        sm: "px-4 py-2 text-sm",
+        md: "px-4 py-3 text-sm",
+        lg: "px-7 py-3.5 text-base",
+        icon: "p-2.5 aspect-square rounded-lg",
       },
     },
     defaultVariants: {
-      variant: 'default',
-      size: 'default',
+      variant: "primary",
+      size: "md",
     },
-  },
+  }
 )
 
-function Button({
-  className,
-  variant = 'default',
-  size = 'default',
-  ...props
-}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
-  return (
-    <ButtonPrimitive
-      data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
-  )
+export interface ButtonProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onAnimationStart" | "onDrag" | "onDragEnd" | "onDragStart" | "style">,
+    VariantProps<typeof buttonVariants> {
+  isLoading?: boolean
+  leftIcon?: React.ReactNode
+  rightIcon?: React.ReactNode
 }
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      className,
+      variant = "primary",
+      size = "md",
+      isLoading,
+      leftIcon,
+      rightIcon,
+      disabled,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const shouldReduceMotion = useReducedMotion()
+    const isInteractive = !disabled && !isLoading
+
+    // Coordinated parent-child motion states
+    const buttonMotionVariants = {
+      initial: {
+        scale: 1,
+        y: 0,
+        boxShadow: "0 0px 0px rgba(0, 0, 0, 0)",
+      },
+      hover: {
+        scale: shouldReduceMotion ? 1 : 1.025,
+        y: shouldReduceMotion ? 0 : -2,
+        boxShadow: variant === "primary"
+          ? "0 12px 24px -3px rgba(147, 51, 234, 0.45), 0 4px 12px -4px rgba(147, 51, 234, 0.45)"
+          : "0 0px 0px rgba(0, 0, 0, 0)",
+      },
+      tap: {
+        scale: shouldReduceMotion ? 1 : 0.97,
+        y: 0,
+      },
+    }
+
+    const leftIconVariants = {
+      hover: {
+        scale: shouldReduceMotion ? 1 : 1.08,
+        rotate: shouldReduceMotion ? 0 : 4,
+      },
+      initial: { scale: 1, rotate: 0 },
+    }
+
+    const rightIconVariants = {
+      hover: { x: shouldReduceMotion ? 0 : 4 },
+      initial: { x: 0 },
+    }
+
+    return (
+      <motion.button
+        ref={ref}
+        disabled={disabled || isLoading}
+        className={cn(buttonVariants({ variant, size, className }))}
+        variants={isInteractive ? buttonMotionVariants : undefined}
+        whileHover="hover"
+        whileTap="tap"
+        transition={{
+          type: "spring",
+          stiffness: 400,
+          damping: 22,
+        }}
+        initial="initial"
+        animate="initial"
+        {...(props as any)}
+      >
+        {isLoading && (
+          <svg
+            className="animate-spin -ml-1 mr-2 h-4 w-4 text-current"
+            fill="none"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            />
+          </svg>
+        )}
+        {!isLoading && leftIcon && (
+          <motion.span
+            variants={leftIconVariants}
+            transition={{ type: "spring", stiffness: 300, damping: 15 }}
+            className="mr-2 inline-flex items-center"
+          >
+            {leftIcon}
+          </motion.span>
+        )}
+        {children}
+        {!isLoading && rightIcon && (
+          <motion.span
+            variants={rightIconVariants}
+            transition={{ type: "spring", stiffness: 300, damping: 15 }}
+            className="ml-2 inline-flex items-center"
+          >
+            {rightIcon}
+          </motion.span>
+        )}
+      </motion.button>
+    )
+  }
+)
+Button.displayName = "Button"
 
 export { Button, buttonVariants }

@@ -4,6 +4,7 @@ import { useState } from "react"
 import type { FormEvent } from "react"
 import { motion } from "motion/react"
 import { Check, Mail, MessageSquare, Send, User } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 const container = {
   hidden: {},
@@ -27,7 +28,7 @@ export function Contact() {
     <section id="contact" className="relative isolate overflow-hidden py-20 sm:py-28">
       {/* Background */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.16_0.04_268)] via-background to-[oklch(0.18_0.05_270)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-bg-dark-navy via-background to-bg-navy-mid" />
         <div className="absolute left-1/2 top-0 size-[560px] -translate-x-1/2 rounded-full bg-brand/15 blur-[150px]" />
         {/* Decorative knight watermark */}
         <span className="absolute -right-10 bottom-0 select-none font-[var(--font-chess)] text-[22rem] leading-none text-white/[0.02]">
@@ -57,7 +58,7 @@ export function Contact() {
               className="mt-5 font-display text-4xl font-bold tracking-tight text-white text-balance sm:text-5xl"
             >
               Let&apos;s make your{" "}
-              <span className="bg-gradient-to-r from-brand-muted to-[oklch(0.68_0.19_300)] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-brand-muted to-purple-pink bg-clip-text text-transparent">
                 next move
               </span>
             </motion.h2>
@@ -67,11 +68,11 @@ export function Contact() {
             </motion.p>
             <motion.ul variants={item} className="mt-8 flex flex-col gap-3 text-sm text-white/60">
               <li className="flex items-center gap-3">
-                <Mail className="size-4 text-brand-muted" />
+                <Mail aria-hidden="true" className="size-4 text-brand-muted" />
                 support@xlchess.com
               </li>
               <li className="flex items-center gap-3">
-                <MessageSquare className="size-4 text-brand-muted" />
+                <MessageSquare aria-hidden="true" className="size-4 text-brand-muted" />
                 Live chat, 7 days a week
               </li>
             </motion.ul>
@@ -90,13 +91,14 @@ export function Contact() {
                     Name
                   </label>
                   <div className="relative">
-                    <User className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-white/40" />
+                    <User aria-hidden="true" className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-white/40" />
                     <input
                       id="name"
                       name="name"
                       type="text"
                       required
                       placeholder="Magnus Carlsen"
+                      suppressHydrationWarning
                       className="w-full rounded-xl border border-white/10 bg-black/20 py-3 pl-10 pr-4 text-white placeholder:text-white/35 outline-none transition focus:border-brand/60 focus:ring-2 focus:ring-brand/30"
                     />
                   </div>
@@ -107,13 +109,14 @@ export function Contact() {
                     Email
                   </label>
                   <div className="relative">
-                    <Mail className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-white/40" />
+                    <Mail aria-hidden="true" className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-white/40" />
                     <input
                       id="email"
                       name="email"
                       type="email"
                       required
                       placeholder="you@example.com"
+                      suppressHydrationWarning
                       className="w-full rounded-xl border border-white/10 bg-black/20 py-3 pl-10 pr-4 text-white placeholder:text-white/35 outline-none transition focus:border-brand/60 focus:ring-2 focus:ring-brand/30"
                     />
                   </div>
@@ -129,27 +132,30 @@ export function Contact() {
                     required
                     rows={4}
                     placeholder="Tell us how we can help you."
+                    suppressHydrationWarning
                     className="w-full resize-none rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-white placeholder:text-white/35 outline-none transition focus:border-brand/60 focus:ring-2 focus:ring-brand/30"
                   />
                 </div>
 
-                <button
+                <Button
                   type="submit"
+                  variant="primary"
+                  size="lg"
                   disabled={sent}
-                  className="group inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-7 py-3.5 text-base font-semibold text-brand-foreground shadow-lg shadow-brand/30 transition hover:brightness-110 hover:shadow-brand/50 disabled:cursor-default disabled:opacity-90"
+                  className="w-full"
                 >
                   {sent ? (
                     <>
-                      <Check className="size-4" />
+                      <Check aria-hidden="true" className="size-4 mr-2" />
                       Message sent
                     </>
                   ) : (
                     <>
                       Send Message
-                      <Send className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      <Send aria-hidden="true" className="size-4 ml-2 transition-transform group-hover/button:translate-x-0.5 group-hover/button:-translate-y-0.5" />
                     </>
                   )}
-                </button>
+                </Button>
               </div>
             </form>
           </motion.div>
