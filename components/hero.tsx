@@ -66,6 +66,9 @@ export function Hero() {
             <a className="transition hover:text-white" href="#puzzles">
               Puzzles
             </a>
+            <a className="transition hover:text-white" href="#contact">
+              Contact
+            </a>
           </nav>
           <button
             type="button"
@@ -148,8 +151,17 @@ export function Hero() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
             className="relative"
           >
-            <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-to-br from-brand/20 to-transparent blur-2xl" />
-            <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.06] p-4 shadow-2xl backdrop-blur-2xl sm:p-6">
+            <motion.div
+              aria-hidden
+              animate={{ opacity: [0.5, 0.75, 0.5] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-to-br from-brand/20 to-transparent blur-2xl"
+            />
+            <motion.div
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="rounded-[1.75rem] border border-white/10 bg-white/[0.06] p-4 shadow-2xl backdrop-blur-2xl sm:p-6"
+            >
               <div className="mb-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="flex size-2 rounded-full bg-[oklch(0.82_0.16_150)] shadow-[0_0_10px_oklch(0.82_0.16_150)]" />
@@ -160,7 +172,7 @@ export function Hero() {
                 </span>
               </div>
               <ChessPuzzle />
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>
